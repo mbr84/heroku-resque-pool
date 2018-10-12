@@ -1,16 +1,14 @@
 require "./lib/resque/pool/version"
 
 Gem::Specification.new do |s|
-  s.name        = "resque-pool"
+  s.name        = "heroku-resque-pool"
   s.version     = Resque::Pool::VERSION
-  s.authors     = ["nicholas a. evans",]
+  s.authors     = ["matthew bramfeld",]
   s.email       = ["nick@ekenosen.net"]
-  s.homepage    = "http://github.com/nevans/resque-pool"
+  s.homepage    = "http://github.com/mbr84/heroku-resque-pool"
   s.summary     = "quickly and easily fork a pool of resque workers"
-  s.license     = 'MIT'
   s.description = <<-EOF
-    quickly and easily fork a pool of resque workers,
-    saving memory (w/REE) and monitoring their uptime
+    this is just a version of resque-pool that doesn't break when you specify resque's timeout
   EOF
 
   s.required_ruby_version = '>= 2.0'
@@ -27,5 +25,5 @@ Gem::Specification.new do |s|
   s.files         += Dir.glob("lib/**/*")
   s.files         += Dir.glob("bin/**/*")
   s.files         += Dir.glob("man/**/*")
-  s.executables   = 'resque-pool'
+  s.executables   = 'heroku-resque-pool'
 end
