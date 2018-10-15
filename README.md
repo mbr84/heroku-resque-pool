@@ -1,2 +1,1 @@
-Resque-pool is a great gem, but is no longer actively maintained. This patch is necessary if you want to take advantage of Resque's updated term signal handling. Set TERM_CHILD and RESQUE_TERM_TIMEOUT to gracefully shutdown workers on redeploy and dyno re-scale.
-
+Resque-pool is a great gem, but is no longer actively maintained. This patch is necessary if you want to take advantage of Resque's updated term signal handling. It further includes patches from the gem [resque-heroku-signals](https://github.com/iloveitaly/resque-heroku-signals), which account for Heroku's practice of sending a SIGTERM to both parent *and* child processes.

@@ -46,6 +46,7 @@ Resque::Worker.class_eval do
     end
   end
 end
+
 module Resque
   class Pool
     SIG_QUEUE_MAX_SIZE = 5
