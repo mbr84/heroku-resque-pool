@@ -18,38 +18,35 @@ Resque.class_eval do
 end
 
 # https://github.com/resque/resque/issues/1559#issuecomment-310908574
+Resque::Worker.class_eval do
+  def unregister_signal_handlers
+    trap('TERM') do
+      $HEROKU_WILL_TERMINATE_RESQUE = true
 
-
-module Resque
-  class Worker
-    def unregister_signal_handlers
       trap('TERM') do
-        $HEROKU_WILL_TERMINATE_RESQUE = true
+        log_with_severity :info, "[resque-heroku] received second term signal, throwing term exception"
 
         trap('TERM') do
-          log_with_severity :info, "[resque-heroku] received second term signal, throwing term exception"
-
-          trap('TERM') do
-            log_with_severity :info, "[resque-heroku] third or more time receiving TERM, ignoring"
-          end
-
-          raise Resque::TermException.new("SIGTERM")
+          log_with_severity :info, "[resque-heroku] third or more time receiving TERM, ignoring"
         end
 
-        log_with_severity :info, "[resque-heroku] received first term signal from heroku, ignoring"
+        raise Resque::TermException.new("SIGTERM")
       end
 
-      trap('INT', 'DEFAULT')
+      log_with_severity :info, "[resque-heroku] received first term signal from heroku, ignoring"
+    end
 
-      begin
-        trap('QUIT', 'DEFAULT')
-        trap('USR1', 'DEFAULT')
-        trap('USR2', 'DEFAULT')
-      rescue ArgumentError
-      end
+    trap('INT', 'DEFAULT')
+
+    begin
+      trap('QUIT', 'DEFAULT')
+      trap('USR1', 'DEFAULT')
+      trap('USR2', 'DEFAULT')
+    rescue ArgumentError
     end
   end
-  
+end
+module Resque
   class Pool
     SIG_QUEUE_MAX_SIZE = 5
     DEFAULT_WORKER_INTERVAL = 5
